@@ -1,0 +1,45 @@
+https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html
+https://stackoverflow.com/questions/25229124/format-instant-to-string
+https://magiclen.org/java-8-date-time-api/
+https://www.mkyong.com/java8/java-8-convert-zoneddatetime-to-timestamp/
+https://stackoverflow.com/questions/43259722/java-date-and-timestamp-from-instance-of-zoneddatetime-utc
+
+final ZonedDateTime until_zoned_date_time = ZonedDateTime.now(Clock.systemUTC()).minusSeconds(10);
+Instant until_instant = until_zoned_date_time.toInstant();
+Instant test = Instant.parse("2019-01-01T00:00:00Z");
+System.out.println(until_instant);
+Timestamp timestamp = Timestamp.from(until_instant);
+System.out.println(timestamp);
+
+DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+      .withZone(ZoneId.systemDefault());
+System.out.println(dateTimeFormatter.format(until_instant));
+
+//====================================================================================
+String with zone to Instant
+String update_time = "2019-08-19T03:45:19+0000";
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+ZonedDateTime zonedDateTime  = ZonedDateTime.parse(update_time,formatter);
+Instant test = zonedDateTime.toInstant();
+
+
+
+
+
+
+//================================================
+
+Instant since_time;
+String sql = "select * from aaa where date>?";
+PreparedStatement pstmt  = db.prepareStatement(sql);
+pstmt.setTimestamp(1, Timestamp.from(since_time));
+
+
+===========
+since_time = "2019-01-01 00:00:00";
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+Timestamp a = new Timestamp(sdf.parse(since_time).getTime());
+pstmt.setTimestamp(1,a);
+
+

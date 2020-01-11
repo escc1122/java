@@ -1,0 +1,259 @@
+//參考位置  http://www.android100.org/html/201507/15/165049.html
+
+java中序列化與反序列化的冷知識，java序列化知識
+
+轉載請註明出處：http://blog.csdn.net/zhaokaiqiang1992
+
+關於什麼是序列化，和為什麼要序列化的知識就不再闡述了，本文主要探討一些特殊點的情況。
+
+1.java中如何實現序列化和反序列化
+
+下面的代碼是進行序列化的簡單實例
+
+public static void main(String[] args) {
+
+		System.out.println("-----------------序列化----------------------↓");
+
+		Student student1 = new Student(10, "zhao");
+		Student student2 = new Student(15, "kai");
+		Student student3 = new Student(20, "qiang");
+
+		ObjectOutputStream objectWriter = null;
+
+		try {
+
+			objectWriter = new ObjectOutputStream(new FileOutputStream(
+					new File("./Serializable")));
+
+			objectWriter.writeObject(student1);
+			objectWriter.writeObject(student2);
+			objectWriter.writeObject(student3);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			try {
+				objectWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		System.out.println("-----------------反序列化----------------------↓");
+		ObjectInputStream objectInputStream = null;
+		try {
+			objectInputStream = new ObjectInputStream(new FileInputStream(
+					new File("./Serializable")));
+
+			Student s1 = (Student) objectInputStream.readObject();
+			Student s2 = (Student) objectInputStream.readObject();
+			Student s3 = (Student) objectInputStream.readObject();
+
+			System.out.println(s1.toString());
+			System.out.println(s2.toString());
+			System.out.println(s3.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				objectInputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+
+2.在反序列化的時候，需要調用本類的構造函數嗎？
+
+我的測試序列化的類如下，在無參和有參的構造函數中，打印了語句，然後，我們使用上面的序列化和反序列化代碼進行測試。
+
+public class Student implements Serializable {
+
+	private int age;
+	private String name;
+
+	public Student() {
+		System.out.println("Student()");
+	}
+
+	public Student(int age, String name) {
+		this.age = age;
+		this.name = name;
+		System.out.println("Student(int age, String name)");
+	}
+
+	@Override
+	public String toString() {
+		return "Student [age=" + age + ", name=" + name + "]";
+	}
+
+}
+
+
+下面是測試結果
+
+-----------------序列化----------------------↓
+Student(int age, String name)
+Student(int age, String name)
+Student(int age, String name)
+-----------------反序列化----------------------↓
+Student [age=10, name=zhao]
+Student [age=15, name=kai]
+Student [age=20, name=qiang]
+
+
+因此，我們可以認為，在反序列化的時候，是不需要調用本類的構造函數的。
+
+
+2.反序列化的時候，會調用父類的構造函數嗎？
+
+我們新創建一個Person類，然後用Student繼承自Person，Student的代碼如下
+
+public class Student extends Person implements Serializable {
+
+	private int age;
+	private String name;
+
+	public Student() {
+		System.out.println("Student()");
+	}
+
+	public Student(int age, String name) {
+		this.age = age;
+		this.name = name;
+		System.out.println("Student(int age, String name)");
+	}
+
+	@Override
+	public String toString() {
+		return "Student [age=" + age + ", name=" + name + "]";
+	}
+
+}
+
+
+Person類的代碼如下
+
+public class Person {
+
+	private boolean sex;
+
+	public Person() {
+		System.out.println("Person()");
+	}
+
+	public Person(boolean sex) {
+		this.sex = sex;
+		System.out.println("Person(boolean sex)");
+	}
+
+	@Override
+	public String toString() {
+		return "Person [sex=" + sex + "]";
+	}
+
+}
+
+
+同樣，我把Person的構造函數都進行了輸出，然後利用上面的代碼進行測試，下面是測試結果
+
+-----------------序列化----------------------↓
+Person()
+Student(int age, String name)
+Person()
+Student(int age, String name)
+Person()
+Student(int age, String name)
+-----------------反序列化----------------------↓
+Person()
+Person()
+Person()
+Student [age=10, name=zhao]
+Student [age=15, name=kai]
+Student [age=20, name=qiang]
+
+
+我們可以看到，雖然Student的構造函數沒有調用，但是Person的無參構造函數卻調用了，這也就是說，在反序列化的時候，本類的構造函數不會調用，但是會調用其父類的無參構造函數。在沒有繼承的情況下，會調用所有類的父類，即Object的構造函數。
+
+
+3.當需要序列化的類的父類沒有實現序列化的時候，能否將父類中protect的屬性進行序列化和反序列化呢？
+
+為了進行測試，我們需要將Person類的代碼進行修改，下面修改之後的代碼
+
+public class Person {
+
+	protected boolean sex;
+
+	public Person() {
+		System.out.println("Person()");
+	}
+
+	public Person(boolean sex) {
+		this.sex = sex;
+		System.out.println("Person(boolean sex)");
+	}
+
+	@Override
+	public String toString() {
+		return "Person [sex=" + sex + "]";
+	}
+
+}
+
+
+同時，我們還需要修改Student的toString()，下面是修改之後Student代碼
+
+public class Student extends Person implements Serializable {
+
+	private int age;
+	private String name;
+
+	public Student() {
+		System.out.println("Student()");
+	}
+
+	public Student(int age, String name) {
+		this.age = age;
+		this.name = name;
+		System.out.println("Student(int age, String name)");
+	}
+
+	public Student(int age, String name, boolean sex) {
+		super(sex);
+		this.age = age;
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [age=" + age + ", name=" + name + ", sex=" + sex + "]";
+	}
+
+}
+
+
+我們進行序列化和反序列化，下面是測試結果
+
+-----------------序列化----------------------↓
+Person(boolean sex)
+Person(boolean sex)
+Person()
+Student(int age, String name)
+-----------------反序列化----------------------↓
+Person()
+Person()
+Person()
+Student [age=10, name=zhao, sex=false]
+Student [age=15, name=kai, sex=false]
+Student [age=20, name=qiang, sex=false]
+
+
+從結果中可以看到，雖然父類沒有進行序列化，但是sex屬性也參與了序列化和反序列化操作，因此不影響。
+
+
+從上面幾個測試的結果中，我們可以得出結論：進行序列化和反序列化必須調用其父類的無參的構造函數。

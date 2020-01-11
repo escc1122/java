@@ -1,0 +1,41 @@
+package com.dec;
+
+import java.io.*;
+
+public class Util
+{
+  // 把文件读入byte数组
+  static public byte[] readFile( String filename ,String url) throws IOException {
+    System.out.println("==========>"+url + filename);
+    File file = new File( url + filename );
+    long len = file.length();
+    byte data[] = new byte[(int)len];
+    FileInputStream fin = new FileInputStream( file );
+    int r = fin.read( data );
+    if (r != len)
+      throw new IOException( "Only read "+r+" of "+len+" for "+file );
+    fin.close();
+    return data;
+  }
+
+  static public byte[] readFile( String filename) throws IOException {
+    System.out.println("==========>"+filename);
+    File file = new File( filename );
+    long len = file.length();
+    byte data[] = new byte[(int)len];
+    FileInputStream fin = new FileInputStream( file );
+    int r = fin.read( data );
+    if (r != len)
+      throw new IOException( "Only read "+r+" of "+len+" for "+file );
+    fin.close();
+    return data;
+  }
+
+  // 把byte数组写出到文件
+  static public void writeFile( String filename,String url ,byte data[] )
+      throws IOException {
+    FileOutputStream fout = new FileOutputStream(url + filename );
+    fout.write( data );
+    fout.close();
+  }
+}
