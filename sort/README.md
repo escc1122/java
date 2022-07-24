@@ -73,3 +73,23 @@ https://www.cnblogs.com/guoyaohua/p/8600214.html
 
     i=3 minIndex=3 [2, 3, 4, 5, 30]
     //最小值為5 位置在3
+
+# 插入排序 Insertion Sort
+
+    [30, 12, 29, 7, 27]
+    
+    i=0 currentValue=12 [30, 30, 29, 7, 27]
+    i=0 currentValue=12 [12, 30, 29, 7, 27]
+    //12比30小 , 30向後移
+
+    i=1 currentValue=29 [12, 30, 30, 7, 27]
+    i=1 currentValue=29 [12, 29, 30, 7, 27]
+
+    i=2 currentValue=7 [12, 29, 30, 30, 27]
+    i=2 currentValue=7 [12, 29, 29, 30, 27]
+    i=2 currentValue=7 [12, 12, 29, 30, 27]
+    i=2 currentValue=7 [7, 12, 29, 30, 27]
+
+    i=3 currentValue=27 [7, 12, 29, 30, 30]
+    i=3 currentValue=27 [7, 12, 29, 29, 30]
+    i=3 currentValue=27 [7, 12, 27, 29, 30]
