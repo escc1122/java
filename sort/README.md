@@ -93,3 +93,21 @@ https://www.cnblogs.com/guoyaohua/p/8600214.html
     i=3 currentValue=27 [7, 12, 29, 30, 30]
     i=3 currentValue=27 [7, 12, 29, 29, 30]
     i=3 currentValue=27 [7, 12, 27, 29, 30]
+
+# 快速排序 Quick Sort
+隨機定義一個值,小的放左邊,大的放右邊
+
+左右再繼續重複
+
+    before start=0 end=9 pivotValue=13 [29, 21, 16, 27, 23, 28, 17, 2, 30, 13]
+    after start=0 end=9 pivotValue=13 newPivot=1 [2, 13, 16, 27, 23, 28, 17, 29, 30, 21]
+    before start=2 end=9 pivotValue=28 [2, 13, 16, 27, 23, 21, 17, 29, 30, 28]
+    after start=2 end=9 pivotValue=28 newPivot=7 [2, 13, 16, 27, 23, 21, 17, 28, 30, 29]
+    before start=2 end=6 pivotValue=23 [2, 13, 16, 27, 17, 21, 23, 28, 30, 29]
+    after start=2 end=6 pivotValue=23 newPivot=5 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
+    before start=2 end=4 pivotValue=21 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
+    after start=2 end=4 pivotValue=21 newPivot=4 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
+    before start=2 end=3 pivotValue=17 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
+    after start=2 end=3 pivotValue=17 newPivot=3 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
+    before start=8 end=9 pivotValue=30 [2, 13, 16, 17, 21, 23, 27, 28, 29, 30]
+    after start=8 end=9 pivotValue=30 newPivot=9 [2, 13, 16, 17, 21, 23, 27, 28, 29, 30]
