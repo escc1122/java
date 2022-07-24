@@ -5,9 +5,12 @@ import util.MagicRandom;
 public class QuickSort {
     public static void main(String[] args) {
         int[] array = MagicRandom.randomIntegerArray(1, 30, 10);
+        int[] printArray = array.clone();
         System.out.println(Arrays.toString(array));
         int[] sortedArray = quickSort(array, 0, array.length - 1);
-
+        System.out.println("");
+        System.out.println("=======================");
+        partitionPrint(printArray);
     }
 
     /**
@@ -71,5 +74,34 @@ public class QuickSort {
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+    }
+
+    public static int partitionPrint(int[] array) {
+        int start = 0;
+        int end = array.length-1;
+
+        int pivot = (int) (start + Math.random() * (end - start + 1));
+        int pivotValue = array[pivot];
+        swap(array, pivot, end);
+        System.out.println();
+        System.out.printf("start=%d end=%d pivotValue=%d %s", start, end, pivotValue, Arrays.toString(array));
+
+        //小的放左邊 大的放右邊 start
+        int newPivot = start;
+        for (int i = start; i < end; i++) {
+            if (array[i] <= pivotValue) {
+                swap(array, i, newPivot);
+                System.out.println();
+                System.out.printf("start=%d end=%d Pivot=%d newPivot=%d i=%d %s", start, end,newPivot,newPivot+1, i,
+                                  Arrays.toString(array));
+                newPivot++;
+            }
+        }
+        swap(array, newPivot, end);
+        System.out.println();
+        System.out.printf("start=%d end=%d Pivot=%d %s", start, end, newPivot,
+                          Arrays.toString(array));
+        //小的放左邊 大的放右邊 end
+        return newPivot;
     }
 }

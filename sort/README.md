@@ -1,6 +1,7 @@
 https://www.cnblogs.com/guoyaohua/p/8600214.html
 
 # 冒泡排序 BubbleSort
+
     每輪 會將該輪最大的移該輪最右邊
     i=0 j=0 [12, 13, 27, 28, 17, 20, 21, 22, 8, 5]
     i=0 j=1 [12, 13, 27, 28, 17, 20, 21, 22, 8, 5]
@@ -58,6 +59,7 @@ https://www.cnblogs.com/guoyaohua/p/8600214.html
     //8
 
 # 选择排序 Selection Sort
+
 每輪找出最小的位置並互換
 
     [30, 2, 3, 5, 4]
@@ -95,6 +97,7 @@ https://www.cnblogs.com/guoyaohua/p/8600214.html
     i=3 currentValue=27 [7, 12, 27, 29, 30]
 
 # 快速排序 Quick Sort
+
 隨機定義一個值,小的放左邊,大的放右邊
 
 左右再繼續重複
@@ -111,3 +114,15 @@ https://www.cnblogs.com/guoyaohua/p/8600214.html
     after start=2 end=3 pivotValue=17 newPivot=3 [2, 13, 16, 17, 21, 23, 27, 28, 30, 29]
     before start=8 end=9 pivotValue=30 [2, 13, 16, 17, 21, 23, 27, 28, 29, 30]
     after start=8 end=9 pivotValue=30 newPivot=9 [2, 13, 16, 17, 21, 23, 27, 28, 29, 30]
+
+Quick Sort partition
+
+    start=0 end=9 pivotValue=20 [23, 29, 10, 24, 9, 22, 16, 14, 13, 20]
+    //i==2 10小於20 所以跟中心點換 23 <-> 10 中心點向右移一格
+    start=0 end=9 Pivot=0 newPivot=1 i=2 [10, 29, 23, 24, 9, 22, 16, 14, 13, 20]
+    start=0 end=9 Pivot=1 newPivot=2 i=4 [10, 9, 23, 24, 29, 22, 16, 14, 13, 20]
+    start=0 end=9 Pivot=2 newPivot=3 i=6 [10, 9, 16, 24, 29, 22, 23, 14, 13, 20]
+    start=0 end=9 Pivot=3 newPivot=4 i=7 [10, 9, 16, 14, 29, 22, 23, 24, 13, 20]
+    start=0 end=9 Pivot=4 newPivot=5 i=8 [10, 9, 16, 14, 13, 22, 23, 24, 29, 20]
+    //最後20跟到中心點換 Pivot=5 ,比20小會在右邊
+    start=0 end=9 Pivot=5 [10, 9, 16, 14, 13, 20, 23, 24, 29, 22]
